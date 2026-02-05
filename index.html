@@ -12,13 +12,12 @@
             justify-content: center;
             height: 100vh;
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Prevents scrollbars from the hearts */
+            overflow: hidden; 
             margin: 0;
         }
 
-        .container { text-align: center; z-index: 2; }
+        .container { text-align: center; z-index: 2; position: relative; }
         
-        /* The Image style */
         .main-img {
             width: 250px; 
             border-radius: 20px;
@@ -43,20 +42,20 @@
         #yesBtn { background-color: #ff69b4; color: white; }
         #noBtn { background-color: #bdc3c7; color: white; }
 
-        /* Floating Hearts Animation */
+        /* Falling Hearts Animation */
         .heart {
             position: absolute;
             color: #ff69b4;
             font-size: 20px;
-            top: 100%;
-            animation: float 5s linear infinite;
+            top: -10%; /* Start above the screen */
+            animation: fall linear forwards; 
             z-index: 1;
             opacity: 0.7;
         }
 
-        @keyframes float {
+        @keyframes fall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } /* Fall past the bottom */
         }
     </style>
 </head>
@@ -64,9 +63,7 @@
 
     <div class="container">
         <img src="valentine.jpg" alt="Us" class="main-img">
-        
         <h1>Will you be my valentine?</h1>
-        
         <div class="buttons">
             <button id="yesBtn" onmouseover="grow()" onmouseout="reset()">Yes</button>
             <button id="noBtn" onmouseover="shrink()" onmouseout="reset()">No</button>
@@ -77,7 +74,6 @@
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
 
-        // Button logic
         function grow() { yesBtn.style.transform = "scale(1.6)"; }
         function shrink() { noBtn.style.transform = "scale(0.4)"; }
         function reset() { 
@@ -87,19 +83,21 @@
 
         yesBtn.onclick = () => alert("Yay! I love you! ❤️ I am outside of your building waiting for you... Let's have dinner together in NYC!");
 
-        // Creating the floating hearts
+        // Creating the falling hearts
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 3 + 's'; // Between 3-5 seconds
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5 seconds
+            // Randomly pick a size for variety
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px'; 
             document.body.appendChild(heart);
 
             setTimeout(() => { heart.remove(); }, 5000);
         }
 
-        setInterval(createHeart, 300); // Create a heart every 0.3 seconds
+        setInterval(createHeart, 200); // Hearts drop every 0.2 seconds
     </script>
 </body>
 </html>
