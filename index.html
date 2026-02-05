@@ -4,20 +4,29 @@
     <title>For My Husband</title>
     <style>
         body {
-            background-color: #ffe4e1; /* Soft Pink */
-            background-image: url('https://www.transparenttextures.com/patterns/hearts.png'); /* Heart pattern */
+            background-color: #ffe4e1;
+            background-image: url('https://www.transparenttextures.com/patterns/hearts.png');
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Prevents scrollbars from the hearts */
+            margin: 0;
         }
 
-        .container { text-align: center; }
+        .container { text-align: center; z-index: 2; }
         
-        h1 { color: #d02090; margin-bottom: 20px; }
+        /* The Image style */
+        .main-img {
+            width: 250px; 
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 { color: #d02090; margin-bottom: 20px; text-shadow: 2px 2px white; }
 
         .buttons { display: flex; gap: 20px; justify-content: center; align-items: center; }
 
@@ -27,17 +36,35 @@
             cursor: pointer;
             border: none;
             border-radius: 10px;
-            transition: transform 0.3s ease; /* Makes the resizing smooth */
+            transition: transform 0.2s ease;
+            font-weight: bold;
         }
 
         #yesBtn { background-color: #ff69b4; color: white; }
         #noBtn { background-color: #bdc3c7; color: white; }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 20px;
+            top: 100%;
+            animation: float 5s linear infinite;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="valentine.jpg" alt="Valentine Image" style="width: 200px; border-radius: 20px;">
+        <img src="valentine.jpg" alt="Us" class="main-img">
+        
         <h1>Will you be my valentine?</h1>
         
         <div class="buttons">
@@ -50,20 +77,29 @@
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
 
-        function grow() {
-            yesBtn.style.transform = "scale(1.5)";
-        }
-
-        function shrink() {
-            noBtn.style.transform = "scale(0.5)";
-        }
-
-        function reset() {
-            yesBtn.style.transform = "scale(1)";
+        // Button logic
+        function grow() { yesBtn.style.transform = "scale(1.6)"; }
+        function shrink() { noBtn.style.transform = "scale(0.4)"; }
+        function reset() { 
+            yesBtn.style.transform = "scale(1)"; 
             noBtn.style.transform = "scale(1)";
         }
 
-        yesBtn.onclick = () => alert("Yay! I love you! ❤️");
+        yesBtn.onclick = () => alert("Yay! I love you! ❤️ See you on Valentine's Day!");
+
+        // Creating the floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's'; // Between 3-5 seconds
+            document.body.appendChild(heart);
+
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+
+        setInterval(createHeart, 300); // Create a heart every 0.3 seconds
     </script>
 </body>
 </html>
