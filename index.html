@@ -1,12 +1,69 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Valentine</title>
+    <title>For My Husband</title>
+    <style>
+        body {
+            background-color: #ffe4e1; /* Soft Pink */
+            background-image: url('https://www.transparenttextures.com/patterns/hearts.png'); /* Heart pattern */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container { text-align: center; }
+        
+        h1 { color: #d02090; margin-bottom: 20px; }
+
+        .buttons { display: flex; gap: 20px; justify-content: center; align-items: center; }
+
+        button {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease; /* Makes the resizing smooth */
+        }
+
+        #yesBtn { background-color: #ff69b4; color: white; }
+        #noBtn { background-color: #bdc3c7; color: white; }
+    </style>
 </head>
 <body>
-  <h1>Hello from valentine</h1>
-  <p>This is a starter index.html — tell me what you'd like to change.</p>
+
+    <div class="container">
+        <div style="font-size: 100px;">💖</div>
+        <h1>Will you be my valentine?</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn" onmouseover="grow()" onmouseout="reset()">Yes</button>
+            <button id="noBtn" onmouseover="shrink()" onmouseout="reset()">No</button>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+
+        function grow() {
+            yesBtn.style.transform = "scale(1.5)";
+        }
+
+        function shrink() {
+            noBtn.style.transform = "scale(0.5)";
+        }
+
+        function reset() {
+            yesBtn.style.transform = "scale(1)";
+            noBtn.style.transform = "scale(1)";
+        }
+
+        yesBtn.onclick = () => alert("Yay! I love you! ❤️");
+    </script>
 </body>
 </html>
