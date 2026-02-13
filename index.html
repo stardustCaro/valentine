@@ -27,7 +27,7 @@
 
         h1 { color: #d02090; margin-bottom: 20px; text-shadow: 2px 2px white; }
 
-        .buttons { display: flex; gap: 20px; justify-content: center; align-items: center; }
+        .buttons { display: flex; gap: 20px; justify-content: center; align-items: center; height: 50px; }
 
         button {
             padding: 15px 30px;
@@ -40,14 +40,13 @@
         }
 
         #yesBtn { background-color: #ff69b4; color: white; }
-        #noBtn { background-color: #bdc3c7; color: white; }
+        #noBtn { background-color: #bdc3c7; color: white; position: relative; }
 
-        /* Falling Hearts Animation */
         .heart {
             position: absolute;
             color: #ff69b4;
             font-size: 20px;
-            top: -10%; /* Start above the screen */
+            top: -10%;
             animation: fall linear forwards; 
             z-index: 1;
             opacity: 0.7;
@@ -55,49 +54,89 @@
 
         @keyframes fall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } /* Fall past the bottom */
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="valentine.jpg" alt="Us" class="main-img">
-        <h1>Will you be my valentine?</h1>
+        <img src="valentine.jpg" alt="Us" class="main-img" id="displayImg">
+        <h1 id="question">Will you be my valentine?</h1>
         <div class="buttons">
-            <button id="yesBtn" onmouseover="grow()" onmouseout="reset()">Yes</button>
-            <button id="noBtn" onmouseover="shrink()" onmouseout="reset()">No</button>
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
         </div>
     </div>
 
     <script>
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
+        const displayImg = document.getElementById('displayImg');
+        const questionText = document.getElementById('question');
 
-        function grow() { yesBtn.style.transform = "scale(1.6)"; }
-        function shrink() { noBtn.style.transform = "scale(0.4)"; }
-        function reset() { 
-            yesBtn.style.transform = "scale(1)"; 
-            noBtn.style.transform = "scale(1)";
+        let noClickCount = 0;
+
+        // The "No" button logic
+        noBtn.onclick = () => {
+            noClickCount++;
+
+            if (noClickCount === 1) {
+                noBtn.innerHTML = "Are you sure?";
+                displayImg.src = "thinking.jpg"; // Replace with your 2nd image path
+            } 
+            else if (noClickCount === 2) {
+                noBtn.innerHTML = "Please no... :(";
+                displayImg.src = "sad.jpg"; // Replace with your 3rd image path
+            } 
+            else if (noClickCount >= 3) {
+                noBtn.innerHTML = "Catch me!";
+                // Make it move on hover now
+                noBtn.style.position = "absolute";
+                moveButton();
+            }
+        };
+
+        // Function to move the button to a random spot
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
         }
 
-        yesBtn.onclick = () => alert("Yay! I love you! Come back home early ❤️!");
+        // Trigger moveButton when he tries to hover over it (after 3rd click)
+        noBtn.onmouseover = () => {
+            if (noClickCount >= 3) {
+                moveButton();
+            } else {
+                noBtn.style.transform = "scale(0.8)";
+            }
+        };
 
-        // Creating the falling hearts
+        noBtn.onmouseout = () => {
+            noBtn.style.transform = "scale(1)";
+        };
+
+        // "Yes" button logic
+        yesBtn.onclick = () => {
+            alert("Yay! I love you! Come back home early ❤️!");
+            displayImg.src = "happy.jpg"; // Optional: change to a happy pic
+        };
+
+        // Falling hearts logic
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5 seconds
-            // Randomly pick a size for variety
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
             heart.style.fontSize = Math.random() * 20 + 10 + 'px'; 
             document.body.appendChild(heart);
-
             setTimeout(() => { heart.remove(); }, 5000);
         }
 
-        setInterval(createHeart, 200); // Hearts drop every 0.2 seconds
+        setInterval(createHeart, 200);
     </script>
 </body>
 </html>
